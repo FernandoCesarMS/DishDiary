@@ -21,6 +21,16 @@ public class UserController {
         return ResponseEntity.ok(userService.findAll());
     }
 
+    @GetMapping(value = "/{cpf}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getUserByCpf(@PathVariable String cpf){
+        User user = userService.findByCpf(cpf);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> postUser(@RequestBody User obj){
         int id = userService.save(obj);

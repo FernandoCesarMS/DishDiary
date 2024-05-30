@@ -13,6 +13,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User findByCpf(String cpf) {
+        if (cpf == null) {
+            return null;
+        }
+        List<User> allUsers = userRepository.findAll();
+
+        return allUsers.stream()
+                .filter(user -> cpf.equals(user.getCpf()))
+                .findFirst()
+                .orElse(null);
+    }
     public List<User> findAll() {
         return userRepository.findAll();
     }
