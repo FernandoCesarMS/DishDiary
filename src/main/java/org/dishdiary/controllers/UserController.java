@@ -1,5 +1,7 @@
 package org.dishdiary.controllers;
 
+import org.dishdiary.domain.requests.ValidateUserRequest;
+import org.dishdiary.domain.responses.DefaultResponse;
 import org.dishdiary.domain.users.User;
 import org.dishdiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +38,15 @@ public class UserController {
         int id = userService.save(obj);
         URI uri = URI.create("jdbc:postgresql://localhost:5432/dishdiary/users/" + id);
         return ResponseEntity.created(uri).body("Usuário criado com sucesso");
+    }
+
+    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> validateUserExist(@RequestBody ValidateUserRequest request){
+        boolean userExists = userService.validateIfUserExists(request);
+
+        if (userExists) {
+            return ResponseEntity.ok().body(DefaultResponse.builder().message("Usuário existe no banco de dados").build());
+        }
+        return ResponseEntity.unprocessableEntity().body(DefaultResponse.builder().message("Usuário não existe no banco de dados").build());
     }
 }

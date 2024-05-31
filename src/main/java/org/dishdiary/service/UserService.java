@@ -1,5 +1,6 @@
 package org.dishdiary.service;
 
+import org.dishdiary.domain.requests.ValidateUserRequest;
 import org.dishdiary.domain.users.User;
 import org.dishdiary.domain.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,18 @@ public class UserService {
         User entitySavedInDB = userRepository.save(review);
 
         return entitySavedInDB.getId();
+    }
+
+    public boolean validateIfUserExists(ValidateUserRequest request) {
+        if (request == null || request.getCpf() == null || request.getSenha() == null) {
+            return false;
+        }
+
+        List<User> allUsers = userRepository.findAll();
+
+        return allUsers.stream()
+                .anyMatch(
+                        user -> request.getCpf().equals(user.getCpf()) && request.getSenha().equals(user.getSenha())
+                );
     }
 }
