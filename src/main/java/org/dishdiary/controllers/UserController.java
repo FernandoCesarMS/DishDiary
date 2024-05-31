@@ -1,7 +1,6 @@
 package org.dishdiary.controllers;
 
 import org.dishdiary.domain.requests.ValidateUserRequest;
-import org.dishdiary.domain.responses.DefaultResponse;
 import org.dishdiary.domain.users.User;
 import org.dishdiary.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +44,8 @@ public class UserController {
         boolean userExists = userService.validateIfUserExists(request);
 
         if (userExists) {
-            return ResponseEntity.ok().body(DefaultResponse.builder().message("Usuário existe no banco de dados").build());
+            return ResponseEntity.ok().body("Usuário existe no banco de dados");
         }
-        return ResponseEntity.unprocessableEntity().body(DefaultResponse.builder().message("Usuário não existe no banco de dados").build());
+        return ResponseEntity.unprocessableEntity().body("Usuário não existe no banco de dados");
     }
 }
