@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.created(uri).body("Usuário criado com sucesso");
     }
 
-    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/validate", produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> validateUserExist(@RequestBody ValidateUserRequest request){
         boolean userExists = userService.validateIfUserExists(request);
 
