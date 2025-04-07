@@ -32,4 +32,13 @@ public class Review {
 
     @Column(nullable = false)
     private String mensagem;
+
+    @Column(nullable = false)
+    private String prato;
+
+    @Column(nullable = false)
+    private String tipoPrato;
+
+    @Column(nullable = false)
+    private Integer nota;
 }

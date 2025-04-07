@@ -25,6 +25,9 @@ public class User {
     private String telefone;
 
     @Column(unique = true, nullable = false, length = 255)
+    private String nome;
+
+    @Column(unique = true, nullable = false, length = 255)
     private String email;
 
     @Column(nullable = false, length = 255)
