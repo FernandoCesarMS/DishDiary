@@ -1,5 +1,6 @@
 package org.dishdiary.controllers;
 
+import org.dishdiary.domain.responses.DefaultResponse;
 import org.dishdiary.domain.reviews.Review;
 import org.dishdiary.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,15 @@ public class ReviewsController {
     }
 
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> postReview(@RequestBody Review obj){
+    public ResponseEntity<DefaultResponse> postReview(@RequestBody Review obj){
         int id = reviewService.save(obj);
-        URI uri = URI.create("jdbc:postgresql://localhost:5432/dishdiary/reviews/" + id);
-        return ResponseEntity.created(uri).body("Review criada com sucesso");
+
+        URI uri = URI.create("/dishdiary/reviews/" + id);
+        DefaultResponse response = DefaultResponse.builder()
+                .message("Review criada com sucesso")
+                .data(obj)
+                .build();
+
+        return ResponseEntity.created(uri).body(response);
     }
 }
