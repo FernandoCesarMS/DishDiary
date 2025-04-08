@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 @UtilityClass
 public class HashUtils {
 
-    private static final String SALT_KEY = System.getenv("SALT_KEY");
+    private static final String SALT_KEY = System.getProperty("SALT_KEY");
 
     public String encryptSHA256(String input) {
         if (SALT_KEY == null) {
