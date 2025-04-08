@@ -34,16 +34,14 @@ public class ReviewService {
         return entitySavedInDB.getId();
     }
 
-    public List<Review> findReviewsByEstablishment(String establishment) {
-        List<Review> allReviews = reviewRepository.findAll();
+    public List<FindAllReviewsResponse> findReviewsByEstablishment(String establishment) {
+        List<Review> allReviews = reviewRepository.findByEstabelecimento(establishment);
 
         if (allReviews.isEmpty()) {
             return new ArrayList<>();
         }
 
-        return allReviews.stream()
-                .filter(review -> establishment.equals(review.getEstabelecimento()))
-                .toList();
+        return allReviews.stream().map(this::convertReviewToResponse).toList();
     }
 
     public List<Review> findReviewsByCpf(String cpf) {

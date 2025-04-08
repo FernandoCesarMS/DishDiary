@@ -14,4 +14,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     List<Review> findByCpf(String cpf);
 
     List<Review> findByTipoPrato(String tipoPrato);
+
+    List<Review> findByEstabelecimento(String establishment);
 }

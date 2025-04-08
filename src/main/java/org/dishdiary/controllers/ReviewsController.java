@@ -20,18 +20,19 @@ public class ReviewsController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(@RequestHeader FoodTypeEnum foodType){
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(
+            @RequestHeader(value = "foodType", required = false) FoodTypeEnum foodType,
+            @RequestHeader(value = "establishment", required = false) String establishment) {
         if (foodType != null) {
             return ResponseEntity.ok(reviewService.findByFoodType(foodType));
         }
 
-        return ResponseEntity.ok(reviewService.findAll());
-    }
+        if (establishment != null) {
+            return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
+        }
 
-    @GetMapping(value = "/establishment/{establishment}", produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> getReviewsByEstablishment(@PathVariable String establishment){
-        return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
+        return ResponseEntity.ok(reviewService.findAll());
     }
 
     @GetMapping(value = "/customer/{cpf}", produces= MediaType.APPLICATION_JSON_VALUE)
