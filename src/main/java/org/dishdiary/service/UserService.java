@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,13 +20,24 @@ public class UserService {
         if (cpf == null) {
             return null;
         }
-        List<User> allUsers = userRepository.findAll();
+        Optional<User> optionalUser = userRepository.findByCpf(cpf);
 
-        return allUsers.stream()
-                .filter(user -> cpf.equals(user.getCpf()))
-                .findFirst()
-                .orElse(null);
+        return optionalUser.orElse(null);
     }
+
+    public boolean isLoginCorrect(String cpf, String password) {
+        if (cpf == null || password == null) {
+            return Boolean.FALSE;
+        }
+
+        Optional<User> optionalUser = userRepository.findByCpf(cpf);
+
+        return optionalUser.map(
+                    user -> user.getSenha().equals(HashUtils.encryptSHA256(password))
+                )
+                .orElse(Boolean.FALSE);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }

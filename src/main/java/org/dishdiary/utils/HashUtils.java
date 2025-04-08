@@ -1,7 +1,6 @@
 package org.dishdiary.utils;
 
 import lombok.experimental.UtilityClass;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,10 +8,18 @@ import java.security.NoSuchAlgorithmException;
 @UtilityClass
 public class HashUtils {
 
+    private static final String SALT_KEY = System.getenv("SALT_KEY");
+
     public String encryptSHA256(String input) {
+        if (SALT_KEY == null) {
+            throw new IllegalStateException("Variável de ambiente SALT_KEY não está definida");
+        }
+
+        String saltedInput = input + SALT_KEY;
+
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            byte[] hashedBytes = digest.digest(saltedInput.getBytes(StandardCharsets.UTF_8));
 
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashedBytes) {
