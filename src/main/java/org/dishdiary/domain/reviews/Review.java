@@ -1,16 +1,11 @@
 package org.dishdiary.domain.reviews;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.dishdiary.domain.users.User;
 
 @Entity
 @Table(name = "reviews")
@@ -24,8 +19,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @JoinColumn(name = "usuario", referencedColumnName="cpf")
-    private String usuario;
+    @ManyToOne
+    @JoinColumn(name = "usuario", referencedColumnName = "cpf")
+    private User usuario;
 
     @Column(nullable = false, length = 255)
     private String estabelecimento;

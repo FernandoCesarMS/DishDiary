@@ -1,5 +1,6 @@
 package org.dishdiary.service;
 
+import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
 import org.dishdiary.domain.reviews.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,18 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public List<Review> findAll() {
-        return reviewRepository.findAll();
+    public List<FindAllReviewsResponse> findAll() {
+        List<Review> allReviews = reviewRepository.findAll();
+
+        return allReviews.stream().map(review -> FindAllReviewsResponse.builder()
+                .prato(review.getPrato())
+                .nota(review.getNota())
+                .estabelecimento(review.getEstabelecimento())
+                .usuario(review.getUsuario().getNome())
+                .mensagem(review.getMensagem())
+                .tipoPrato(review.getTipoPrato())
+                .build())
+                .toList();
     }
 
     public int save(Review review) {

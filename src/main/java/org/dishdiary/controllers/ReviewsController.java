@@ -1,6 +1,7 @@
 package org.dishdiary.controllers;
 
 import org.dishdiary.domain.responses.DefaultResponse;
+import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
 import org.dishdiary.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ReviewsController {
     private ReviewService reviewService;
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> getReviews(){
+    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(){
         return ResponseEntity.ok(reviewService.findAll());
     }
 
