@@ -2,6 +2,7 @@ package org.dishdiary.domain.reviews;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,4 +17,9 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     List<Review> findByTipoPrato(String tipoPrato);
 
     List<Review> findByEstabelecimento(String establishment);
+
+    @Query("SELECT r FROM Review r WHERE LOWER(r.usuario.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
+    List<Review> findByCustomerName(@Param("nome") String nome);
+
+
 }

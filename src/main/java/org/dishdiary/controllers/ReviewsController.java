@@ -22,14 +22,19 @@ public class ReviewsController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FindAllReviewsResponse>> getReviews(
-            @RequestHeader(value = "foodType", required = false) FoodTypeEnum foodType,
-            @RequestHeader(value = "establishment", required = false) String establishment) {
+            @RequestHeader(value = "food-type", required = false) FoodTypeEnum foodType,
+            @RequestHeader(value = "establishment", required = false) String establishment,
+            @RequestHeader(value = "customer-name", required = false) String customerName) {
         if (foodType != null) {
             return ResponseEntity.ok(reviewService.findByFoodType(foodType));
         }
 
         if (establishment != null) {
             return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
+        }
+
+        if (customerName != null) {
+            return ResponseEntity.ok(reviewService.findReviewsByCustomerName(customerName));
         }
 
         return ResponseEntity.ok(reviewService.findAll());

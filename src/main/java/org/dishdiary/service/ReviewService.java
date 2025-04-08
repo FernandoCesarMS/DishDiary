@@ -44,6 +44,16 @@ public class ReviewService {
         return allReviews.stream().map(this::convertReviewToResponse).toList();
     }
 
+    public List<FindAllReviewsResponse> findReviewsByCustomerName(String name) {
+        List<Review> allReviews = reviewRepository.findByCustomerName(name);
+
+        if (allReviews.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return allReviews.stream().map(this::convertReviewToResponse).toList();
+    }
+
     public List<Review> findReviewsByCpf(String cpf) {
         return reviewRepository.findByCpf(cpf);
     }
