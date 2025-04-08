@@ -1,7 +1,9 @@
 package org.dishdiary.controllers;
 
 import org.dishdiary.domain.responses.DefaultResponse;
+import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
+import org.dishdiary.enums.FoodTypeEnum;
 import org.dishdiary.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,14 +20,29 @@ public class ReviewsController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> getReviews(){
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(
+            @RequestHeader(value = "food-type", required = false) FoodTypeEnum foodType,
+            @RequestHeader(value = "establishment", required = false) String establishment,
+            @RequestHeader(value = "customer-name", required = false) String customerName) {
+        if (foodType != null) {
+            return ResponseEntity.ok(reviewService.findByFoodType(foodType));
+        }
+
+        if (establishment != null) {
+            return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
+        }
+
+        if (customerName != null) {
+            return ResponseEntity.ok(reviewService.findReviewsByCustomerName(customerName));
+        }
+
         return ResponseEntity.ok(reviewService.findAll());
     }
 
-    @GetMapping(value = "{establishment}", produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> getReviews(@PathVariable String establishment){
-        return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
+    @GetMapping(value = "/customer/{cpf}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Review>> getReviewsByCpf(@PathVariable String cpf){
+        return ResponseEntity.ok(reviewService.findReviewsByCpf(cpf));
     }
 
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)

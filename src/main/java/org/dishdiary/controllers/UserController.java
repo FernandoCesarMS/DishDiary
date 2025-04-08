@@ -32,6 +32,24 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping(value = "/login", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultResponse> validateLogin(
+            @RequestHeader(value = "cpf", required = false) String cpf,
+            @RequestHeader(value = "password", required = false) String password) {
+        if (!userService.isLoginCorrect(cpf, password)) {
+            DefaultResponse response = DefaultResponse.builder()
+                    .message("Senha inválida")
+                    .build();
+
+            return ResponseEntity.unprocessableEntity().body(response);
+        }
+
+        DefaultResponse response = DefaultResponse.builder()
+                .message("Usuário válido")
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultResponse> postUser(@RequestBody User obj){
         int id = userService.save(obj);
