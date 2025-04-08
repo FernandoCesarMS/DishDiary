@@ -3,6 +3,7 @@ package org.dishdiary.service;
 import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
 import org.dishdiary.domain.reviews.ReviewRepository;
+import org.dishdiary.enums.FoodTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,13 @@ public class ReviewService {
     public List<FindAllReviewsResponse> findAll() {
         List<Review> allReviews = reviewRepository.findAll();
 
-        return allReviews.stream().map(review -> FindAllReviewsResponse.builder()
-                .prato(review.getPrato())
-                .nota(review.getNota())
-                .estabelecimento(review.getEstabelecimento())
-                .usuario(review.getUsuario().getNome())
-                .mensagem(review.getMensagem())
-                .tipoPrato(review.getTipoPrato())
-                .build())
-                .toList();
+        return allReviews.stream().map(this::convertReviewToResponse).toList();
+    }
+
+    public List<FindAllReviewsResponse> findByFoodType(FoodTypeEnum foodType) {
+        List<Review> allReviews = reviewRepository.findByTipoPrato(foodType.name());
+
+        return allReviews.stream().map(this::convertReviewToResponse).toList();
     }
 
     public int save(Review review) {
@@ -49,5 +48,16 @@ public class ReviewService {
 
     public List<Review> findReviewsByCpf(String cpf) {
         return reviewRepository.findByCpf(cpf);
+    }
+
+    private FindAllReviewsResponse convertReviewToResponse(Review review) {
+        return FindAllReviewsResponse.builder()
+                .prato(review.getPrato())
+                .nota(review.getNota())
+                .estabelecimento(review.getEstabelecimento())
+                .usuario(review.getUsuario().getNome())
+                .mensagem(review.getMensagem())
+                .tipoPrato(review.getTipoPrato())
+                .build();
     }
 }

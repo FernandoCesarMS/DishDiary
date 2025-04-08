@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.dishdiary.domain.users.User;
+import org.dishdiary.enums.FoodTypeEnum;
 
 @Entity
 @Table(name = "reviews")

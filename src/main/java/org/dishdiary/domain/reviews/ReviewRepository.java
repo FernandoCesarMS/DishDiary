@@ -12,4 +12,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query(value = "SELECT * FROM reviews r WHERE r.usuario = :cpf",
             nativeQuery = true)
     List<Review> findByCpf(String cpf);
+
+    List<Review> findByTipoPrato(String tipoPrato);
 }

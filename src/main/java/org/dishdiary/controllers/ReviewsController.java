@@ -3,6 +3,7 @@ package org.dishdiary.controllers;
 import org.dishdiary.domain.responses.DefaultResponse;
 import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
+import org.dishdiary.enums.FoodTypeEnum;
 import org.dishdiary.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,12 +21,16 @@ public class ReviewsController {
     private ReviewService reviewService;
 
     @GetMapping(produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(){
+    public ResponseEntity<List<FindAllReviewsResponse>> getReviews(@RequestHeader FoodTypeEnum foodType){
+        if (foodType != null) {
+            return ResponseEntity.ok(reviewService.findByFoodType(foodType));
+        }
+
         return ResponseEntity.ok(reviewService.findAll());
     }
 
-    @GetMapping(value = "{establishment}", produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Review>> getReviews(@PathVariable String establishment){
+    @GetMapping(value = "/establishment/{establishment}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Review>> getReviewsByEstablishment(@PathVariable String establishment){
         return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
     }
 
