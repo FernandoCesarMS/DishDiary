@@ -29,6 +29,11 @@ public class ReviewsController {
         return ResponseEntity.ok(reviewService.findReviewsByEstablishment(establishment));
     }
 
+    @GetMapping(value = "/customer/{cpf}", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Review>> getReviewsByCpf(@PathVariable String cpf){
+        return ResponseEntity.ok(reviewService.findReviewsByCpf(cpf));
+    }
+
     @PostMapping(produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultResponse> postReview(@RequestBody Review obj){
         int id = reviewService.save(obj);

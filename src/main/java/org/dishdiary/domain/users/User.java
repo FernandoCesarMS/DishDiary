@@ -1,5 +1,6 @@
 package org.dishdiary.domain.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class User {
     @Column(unique = true, nullable = false, length = 255)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String senha;
 }

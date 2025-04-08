@@ -46,4 +46,8 @@ public class ReviewService {
                 .filter(review -> establishment.equals(review.getEstabelecimento()))
                 .toList();
     }
+
+    public List<Review> findReviewsByCpf(String cpf) {
+        return reviewRepository.findByCpf(cpf);
+    }
 }
