@@ -21,14 +21,8 @@ public class User {
     @Column(unique = true, nullable = false, length = 11)
     private String cpf;
 
-    @Column(nullable = false, length = 15)
-    private String telefone;
-
     @Column(unique = true, nullable = false, length = 255)
     private String nome;
-
-    @Column(unique = true, nullable = false, length = 255)
-    private String email;
 
     @Column(nullable = false, length = 255)
     private String senha;
