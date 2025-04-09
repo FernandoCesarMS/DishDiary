@@ -1,6 +1,5 @@
 package org.dishdiary.domain.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +32,8 @@ public class User {
 
     @Column(nullable = false, length = 255)
     private String senha;
+
+    public User(String cpf) {
+        this.cpf = cpf;
+    }
 }

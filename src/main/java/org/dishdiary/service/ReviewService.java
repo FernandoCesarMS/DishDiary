@@ -3,6 +3,7 @@ package org.dishdiary.service;
 import org.dishdiary.domain.responses.FindAllReviewsResponse;
 import org.dishdiary.domain.reviews.Review;
 import org.dishdiary.domain.reviews.ReviewRepository;
+import org.dishdiary.domain.users.User;
 import org.dishdiary.enums.FoodTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserService userService;
 
     public List<FindAllReviewsResponse> findAll() {
         List<Review> allReviews = reviewRepository.findAll();
@@ -29,6 +33,9 @@ public class ReviewService {
     }
 
     public int save(Review review) {
+        User user = userService.findByCpf(review.getUsuario().getCpf());
+        review.setUsuario(user);
+
         Review entitySavedInDB = reviewRepository.save(review);
 
         return entitySavedInDB.getId();
