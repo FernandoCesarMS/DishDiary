@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.dishdiary.domain.users.User;
 import org.dishdiary.enums.FoodTypeEnum;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "reviews")
 @AllArgsConstructor
@@ -38,4 +40,7 @@ public class Review {
 
     @Column(nullable = false)
     private Integer nota;
+
+    @Column(nullable = false)
+    private LocalDateTime dataCadastro;
 }
